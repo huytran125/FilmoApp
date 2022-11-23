@@ -1,5 +1,5 @@
 import {Platform} from 'react-native';
-import {RTCPeerConnection, RTCSessionDescription} from 'react-native-webrtc';
+import {RTCSessionDescription} from 'react-native-webrtc';
 
 /**
  * Performs the actual SDP exchange.
@@ -18,8 +18,8 @@ let sessionConstraints = {
   offerToReceiveVideo: true,
 };
 export default async function negotiateConnectionWithClientOffer(
-  peerConnection: RTCPeerConnection,
-  endpoint: string,
+  peerConnection,
+  endpoint,
 ) {
   /** https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/createOffer */
   const offer = await peerConnection.createOffer(sessionConstraints);
@@ -48,13 +48,10 @@ export default async function negotiateConnectionWithClientOffer(
       Platform.OS === 'ios'
         ? ofr.sdp.replaceAll('sendrecv', 'recvonly')
         : ofr.sdp;
-    console.log('postText', postText);
     let response = await postSDPOffer(endpoint, postText);
 
     if (response.status === 201) {
       let answerSDP = await response.text();
-      console.log('answer', answerSDP);
-
       await peerConnection.setRemoteDescription(
         new RTCSessionDescription({type: 'answer', sdp: answerSDP}),
       );
@@ -73,7 +70,7 @@ export default async function negotiateConnectionWithClientOffer(
   }
 }
 
-async function postSDPOffer(endpoint: string, data: string) {
+async function postSDPOffer(endpoint, data) {
   return await fetch(endpoint, {
     method: 'POST',
     mode: 'cors',
@@ -92,8 +89,8 @@ async function postSDPOffer(endpoint: string, data: string) {
  * https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/iceGatheringState
  * https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/icegatheringstatechange_event
  */
-async function waitToCompleteICEGathering(peerConnection: RTCPeerConnection) {
-  return new Promise<RTCSessionDescription | null>(resolve => {
+async function waitToCompleteICEGathering(peerConnection) {
+  return new Promise(resolve => {
     /** Wait at most 1 second for ICE gathering. */
     setTimeout(function () {
       resolve(peerConnection.localDescription);
