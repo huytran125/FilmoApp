@@ -4,11 +4,8 @@ import {RTCPeerConnection, RTCView, MediaStream} from 'react-native-webrtc';
 import negotiateConnectionWithClientOffer from '../../utils/livestream/negotiateConnectionWithClientOffer';
 
 const windowWidth = Dimensions.get('window').width;
-const RCTLivestream = props => {
-  const {
-    style,
-    endpoint = 'https://customer-uxkj6baef2fselfy.cloudflarestream.com/25635cad214050e88ac319e6b14a985c/webRTC/play',
-  } = props;
+const RTCLivestream = props => {
+  const {style, endpoint} = props;
   const [remote, setRemote] = useState();
   let peerConstraints = {
     iceServers: [
@@ -88,12 +85,7 @@ const RCTLivestream = props => {
   return (
     <View style={[styles.container, style]}>
       {remoteStream.current?.toURL() && (
-        <RTCView
-          objectFit="cover"
-          mirror={true}
-          streamURL={remote}
-          style={styles.stream}
-        />
+        <RTCView {...props} streamURL={remote} style={styles.stream} />
       )}
     </View>
   );
@@ -112,4 +104,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RCTLivestream;
+export default RTCLivestream;
