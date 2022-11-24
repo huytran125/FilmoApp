@@ -7,6 +7,7 @@ const windowWidth = Dimensions.get('window').width;
 const RTCLivestream = props => {
   const {style, endpoint} = props;
   const [remote, setRemote] = useState();
+  // stun server provide by cloudflare
   let peerConstraints = {
     iceServers: [
       {
@@ -19,6 +20,7 @@ const RTCLivestream = props => {
   const remoteStream = useRef(null);
 
   useEffect(() => {
+    //  addTransceiver() creates a new RTCRtpTransceiver and adds it to the set of transceivers associated with the RTCPeerConnection. Each transceiver represents a bidirectional stream, with both an RTCRtpSender and an RTCRtpReceiver associated with it.
     peerConnection.current.addTransceiver('video', {
       direction: 'recvonly',
     });
@@ -35,6 +37,7 @@ const RTCLivestream = props => {
     peerConnection.current.ontrack = event => {
       const track = event.track;
       const currentTracks = remoteStream.current.getTracks();
+      // add track from server to local stream when not have track, return if track exists
       const streamAlreadyHasVideoTrack = currentTracks.some(
         newTrack => newTrack.kind === 'video',
       );
@@ -66,6 +69,7 @@ const RTCLivestream = props => {
       }
     });
 
+    // The negotiationneeded event is first dispatched to the RTCPeerConnection when media is first added to the connection.
     peerConnection.current.addEventListener('negotiationneeded', ev => {
       negotiateConnectionWithClientOffer(peerConnection.current, endpoint);
     });
@@ -75,6 +79,7 @@ const RTCLivestream = props => {
         switch (peerConnection.current?.iceConnectionState) {
           case 'connected':
           case 'completed':
+            // start to set the remote stream url when the connection completed
             setRemote(remoteStream.current?.toURL());
             break;
         }

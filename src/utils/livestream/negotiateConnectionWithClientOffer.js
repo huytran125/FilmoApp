@@ -42,6 +42,9 @@ export default async function negotiateConnectionWithClientOffer(
      * This response contains the server's SDP offer.
      * This specifies how the client should communicate,
      * and what kind of media client and server have negotiated to exchange.
+     * because of a bug relate to react-native web-rtc always change our offer type in ios to sendrecv/sendonly
+     * we must make function replace all to change it to 'recvonly'
+     * because whep only receive type 'recvonly'
      */
 
     const postText =
@@ -88,6 +91,7 @@ async function postSDPOffer(endpoint, data) {
  * https://www.ietf.org/archive/id/draft-ietf-wish-whip-01.html#section-4.1
  * https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/iceGatheringState
  * https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/icegatheringstatechange_event
+ * check if RTCPeerConnection have finished gathering ICE candidates.
  */
 async function waitToCompleteICEGathering(peerConnection) {
   return new Promise(resolve => {
