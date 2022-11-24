@@ -26,8 +26,7 @@ cd ios && pod install && cd ..
 npx react-native run-ios
 ```
 ## Noted:
-```
-. This demo is only work with react-native webrtc version 106.0.0-beta.6 or higher. Consider to 
-upgrade your react-native webrtc version if you want to use my repo as an instruction
+  * This demo is only work with react-native webrtc version 106.0.0-beta.6 or higher. Consider to 
+    upgrade your react-native webrtc version if you want to use my repo as an instruction
 
 
