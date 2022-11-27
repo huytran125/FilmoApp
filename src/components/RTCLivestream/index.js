@@ -4,6 +4,7 @@ import {RTCPeerConnection, RTCView, MediaStream} from 'react-native-webrtc';
 import negotiateConnectionWithClientOffer from '../../utils/livestream/negotiateConnectionWithClientOffer';
 
 const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 const RTCLivestream = props => {
   const {style, endpoint} = props;
   const [remote, setRemote] = useState();
@@ -99,12 +100,12 @@ const RTCLivestream = props => {
 const styles = StyleSheet.create({
   container: {
     width: windowWidth,
-    height: windowWidth,
+    height: windowHeight,
   },
   stream: {
     flex: 1,
     width: windowWidth,
-    height: windowWidth,
+    height: windowHeight,
     position: 'absolute',
   },
 });

@@ -25,14 +25,8 @@ const App = () => {
   };
 
   const endpoint =
-    'https://customer-uxkj6baef2fselfy.cloudflarestream.com/25635cad214050e88ac319e6b14a985c/webRTC/play';
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <RTCLivestream objectFit="cover" mirror={true} endpoint={endpoint} />
-    </SafeAreaView>
-  );
+    'https://customer-uxkj6baef2fselfy.cloudflarestream.com/0d9c4be618f76bc3066df6a3426c54bb/webRTC/play';
+  return <RTCLivestream objectFit="cover" mirror={true} endpoint={endpoint} />;
 };
 
 const styles = StyleSheet.create({
